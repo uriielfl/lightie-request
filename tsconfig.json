@@ -6,8 +6,9 @@
     "rootDir": ".",
     "strict": true,
     "lib": ["ES2015", "DOM"],
-    "declaration": true
+    "declaration": true,
+    "esModuleInterop": true
   },
-  "include": ["./src/index.ts", "./src/**/*"], 
+  "include": ["./src/index.ts", "./src/**/*", "jest.config.js"], 
   "exclude": ["node_modules"]
 }

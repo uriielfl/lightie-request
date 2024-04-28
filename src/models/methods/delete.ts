@@ -1,4 +1,3 @@
-import { IHeaderRequest } from '../../utils/interfaces/header.interface';
 import { HttpMethodsEnum } from '../../utils/enums/http-methods.enum';
 import { IOptions } from '../../utils/interfaces/options.interface';
 
@@ -10,16 +9,23 @@ export class Delete {
   ) {}
   async run() {
     const fullUrl = `${this.url}/${this.path}`;
+    const HEADER = {
+      'Content-Type': 'application/json',
+      ...(this.options?.headers as Record<string, string>),
+    };
 
     const response = await fetch(fullUrl, {
       method: HttpMethodsEnum.DELETE,
-      headers: this.options?.headers as Record<string, string>,
+      headers: HEADER
     });
 
     if (!response.ok) {
       throw new Error('HTTP error:\n' + response.status);
     }
 
-    return response.text();
+    return {
+      status: response.status,
+      data: JSON.parse(await response.text())
+    }
   }
 }
