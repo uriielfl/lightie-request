@@ -1,4 +1,5 @@
 import { Delete } from "./delete";
+import 'isomorphic-fetch';
 
 global.fetch = jest.fn(() =>
   Promise.resolve(new Response(JSON.stringify({ message: 'Success' }), { status: 200 }))

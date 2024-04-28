@@ -1,4 +1,5 @@
 import { Put } from "./put";
+import 'isomorphic-fetch';
 
 const MOCK_DATA = {
   key: 'value'
