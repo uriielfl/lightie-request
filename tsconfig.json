@@ -5,7 +5,8 @@
     "outDir": "dist",
     "rootDir": ".",
     "strict": true,
-    "lib": ["ES2015", "DOM"]
+    "lib": ["ES2015", "DOM"],
+    "declaration": true
   },
   "include": ["./src/index.ts", "./src/**/*"], 
   "exclude": ["node_modules"]

@@ -2,9 +2,13 @@
   "name": "lightie-request",
   "version": "1.0.0",
   "description": "make light requests ",
-  "main": "index.js",
+  "main": "dist/src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uriielfl/lightie-request.git"
+  },
   "scripts": {
-    "start": "npx tsc index.ts && node index.js",
+    "start": "npx tsc && node dist/src/index.js",
     "test": "npm run test",
     "build": "tsc"
   },
