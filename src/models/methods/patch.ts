@@ -26,6 +26,9 @@ export class Patch {
       throw new Error('HTTP error:\n' + response.status);
     }
 
-    return response.text();
+    return {
+      status: response.status,
+      data: JSON.parse(await response.text())
+    }
   }
 }

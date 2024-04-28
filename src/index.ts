@@ -2,12 +2,16 @@ import { Get, Post, Patch, Put, Delete } from './models/methods';
 import { IHeaderRequest } from './utils/interfaces/header.interface';
 
 class Requests {
-  url: string = '';
+  url: string = 'http://localhost:80';
   headers?: IHeaderRequest;
   constructor() {}
 
   init(url?: string) {
-    this.url = url ?? 'http://localhost:80';
+    console.log('init called with url:', url);
+    if(url) {
+      this.url = url;
+    }
+    console.log('this.url after init:', this.url);
     return this;
   }
 
@@ -35,8 +39,6 @@ class Requests {
     const postRequest = new Delete(this.url, path, { headers: this.headers });
     return await postRequest.run();
   }
-
-  intercept(callback: () => void) {}
 }
 
 export const req = new Requests();
