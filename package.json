@@ -1,0 +1,19 @@
+{
+  "name": "lightie-request",
+  "version": "1.0.0",
+  "description": "make light requests ",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx tsc index.ts && node index.js",
+    "test": "npm run test",
+    "build": "tsc"
+  },
+  "author": "Uriel Francisco Libano",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@types/node": "^20.12.7"
+  }
+}
