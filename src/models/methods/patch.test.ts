@@ -1,4 +1,5 @@
 import { Patch } from "./patch";
+import 'isomorphic-fetch';
 
 const MOCK_DATA = {
   key: 'value'

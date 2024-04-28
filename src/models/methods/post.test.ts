@@ -1,4 +1,5 @@
 import { Post } from './post';
+import 'isomorphic-fetch';
 
 const MOCK_DATA = {
   key: 'value',
