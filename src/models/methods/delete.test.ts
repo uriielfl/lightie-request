@@ -1,3 +1,4 @@
+import { LightieError } from "../handlers/lightie-error";
 import { Delete } from "./delete";
 import 'isomorphic-fetch';
 
@@ -56,13 +57,13 @@ describe('Delete method model', () => {
 
   it('should throw an error when the response is not ok', async () => {
     (fetch as jest.Mock).mockResolvedValueOnce(
-      new Response(JSON.stringify({ message: 'Bad Request' }), { status: 400 })
+      new Response(JSON.stringify({ message: 'Bad Request' }), { status: 400, statusText: 'Bad Request'})
     );
 
     try {
       await method.run();
     } catch (error) {
-      expect(error).toEqual(new Error('HTTP error:\n400'));
+      expect(error).toEqual(new LightieError(400, 'Bad Request', {message: 'Bad Request'} ));
     }
   });
 });
