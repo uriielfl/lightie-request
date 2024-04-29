@@ -1,7 +1,7 @@
 import { Get, Post, Patch, Put, Delete } from './models/methods';
 import { IHeaderRequest } from './utils/interfaces/header.interface';
 
-class Requests {
+export class Requests {
   url: string = 'http://localhost:80';
   headers?: IHeaderRequest;
   constructor() {}
@@ -41,4 +41,3 @@ class Requests {
   }
 }
 
-export const req = new Requests();
