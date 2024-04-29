@@ -9,6 +9,6 @@
     "declaration": true,
     "esModuleInterop": true
   },
-  "include": ["src/main.ts", "./src/**/*", "jest.config.js", "index.ts"], 
+  "include": ["index.ts", "src/main.ts", "./src/**/*", "jest.config.js", "index.ts"], 
   "exclude": ["node_modules"]
 }
