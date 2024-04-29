@@ -1,3 +1,3 @@
-import { Requests } from "./src/main";
+import { LightieRequest } from "./src/main";
 
-export const req = new Requests();
+export const req = new LightieRequest();
