@@ -1,3 +1,4 @@
+import { LightieError } from '../handlers/lightie-error';
 import { Post } from './post';
 import 'isomorphic-fetch';
 
@@ -73,6 +74,7 @@ describe('Post method model', () => {
       Promise.resolve(
         new Response(JSON.stringify({ message: 'Bad Request' }), {
           status: 400,
+          statusText: 'Bad Request',
         }),
       ),
     );
@@ -80,7 +82,7 @@ describe('Post method model', () => {
     try {
       await method.run();
     } catch (error) {
-      expect(error).toEqual(new Error('HTTP error:\n400'));
+      expect(error).toEqual(new LightieError(400, 'Bad Request', {message: 'Bad Request'} ));
     }
   });
 });
