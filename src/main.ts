@@ -7,11 +7,9 @@ export class Requests {
   constructor() {}
 
   init(url?: string) {
-    console.log('init called with url:', url);
     if(url) {
       this.url = url;
     }
-    console.log('this.url after init:', this.url);
     return this;
   }
 
