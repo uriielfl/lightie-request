@@ -1,6 +1,6 @@
 {
   "name": "lightie-request",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "make light requests ",
   "main": "dist/index.js",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/uriielfl/lightie-request.git"
   },
   "scripts": {
-    "start": "npx tsc && node dist/src/index.js",
+    "start": "npx tsc && node dist/index.js",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "build": "tsc"
