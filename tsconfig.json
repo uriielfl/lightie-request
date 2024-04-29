@@ -2,13 +2,13 @@
   "compilerOptions": {
     "target": "ES2015",
     "module": "CommonJS",
-    "outDir": "dist",
+    "outDir": "./dist",
     "rootDir": ".",
     "strict": true,
     "lib": ["ES2015", "DOM"],
     "declaration": true,
     "esModuleInterop": true
   },
-  "include": ["src/index.ts", "src/main.ts", "./src/**/*", "jest.config.js", "src/index.ts"], 
+  "include": ["index.ts", "src/main.ts", "./src/**/*", "jest.config.js", "index.ts"], 
   "exclude": ["node_modules"]
 }

@@ -1,4 +1,4 @@
-import { req } from './index';
+import { req } from '../index';
 
 // Cria mocks para os métodos
 const mockPost = jest.fn();
@@ -9,7 +9,7 @@ const mockDelete = jest.fn();
 // ...
 
 // Mock do objeto req
-jest.mock('./index', () => {
+jest.mock('../index', () => {
   let defaultUrl = 'http://localhost:80';
   return {
     req: {
