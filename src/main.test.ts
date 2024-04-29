@@ -1,4 +1,4 @@
-import { req } from '../index';
+import { req } from './index';
 
 // Cria mocks para os métodos
 const mockPost = jest.fn();
