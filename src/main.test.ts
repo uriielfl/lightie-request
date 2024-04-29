@@ -9,7 +9,7 @@ const mockDelete = jest.fn();
 // ...
 
 // Mock do objeto req
-jest.mock('./index', () => {
+jest.mock('../index', () => {
   let defaultUrl = 'http://localhost:80';
   return {
     req: {
