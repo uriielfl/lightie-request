@@ -2,13 +2,16 @@ import { IOptions } from '../../utils/interfaces/options.interface';
 import { HttpMethodsEnum } from '../../utils/enums/http-methods.enum';
 import { IResponse } from '../../utils/interfaces/response.interface';
 import { LightieError } from '../handlers/lightie-error';
+import { Validator } from '../helpers/validators';
 
-export class Post {
+export class Post extends Validator {
   constructor(
-    private url: string,
-    private path?: string,
-    private options?: IOptions,
-  ) {}
+    public url: string,
+    public path?: string,
+    public options?: IOptions,
+  ) {
+    super(url, path, options);
+  }
   async run(): Promise<IResponse> {
     const fullUrl = `${this.url}/${this.path}`;
     const BODY = JSON.stringify(this.options?.body);
@@ -27,17 +30,13 @@ export class Post {
     if (!response.ok) {
       const errorData = await response.json();
 
-      throw new LightieError(
-        response.status,
-        response.statusText,
-        errorData,
-      );
+      throw new LightieError(response.status, response.statusText, errorData);
     }
-    
+
     return {
       status: response.status,
       data: JSON.parse(await response.text()),
       statusText: response.statusText,
-    }
+    };
   }
 }

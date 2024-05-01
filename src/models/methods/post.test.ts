@@ -28,7 +28,6 @@ describe('Post method model', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual({ message: 'Success' });
 
-    // Verificar se fetch foi chamado com os argumentos corretos
     expect(fetch).toHaveBeenCalledWith('http://localhost:3000/posts', {
       method: 'POST',
       body: JSON.stringify(MOCK_DATA),
@@ -40,17 +39,15 @@ describe('Post method model', () => {
   });
 
   it('should return status and message on successful post request without custom headers', async () => {
-    // Criar uma nova instância de Post sem passar options
     const methodWithoutHeaders = new Post('http://localhost:3000', 'posts');
 
     const response = await methodWithoutHeaders.run();
     expect(response.status).toBe(200);
     expect(response.data).toEqual({ message: 'Success' });
 
-    // Verificar se fetch foi chamado com os argumentos corretos
     expect(fetch).toHaveBeenCalledWith('http://localhost:3000/posts', {
       method: 'POST',
-      body: JSON.stringify(undefined), // body será undefined, pois não passamos options
+      body: JSON.stringify(undefined),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -82,7 +79,9 @@ describe('Post method model', () => {
     try {
       await method.run();
     } catch (error) {
-      expect(error).toEqual(new LightieError(400, 'Bad Request', {message: 'Bad Request'} ));
+      expect(error).toEqual(
+        new LightieError(400, 'Bad Request', { message: 'Bad Request' }),
+      );
     }
   });
 });

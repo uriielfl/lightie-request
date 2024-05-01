@@ -1,9 +1,11 @@
-import { LightieError } from "../handlers/lightie-error";
-import { Get } from "./get";
+import { LightieError } from '../handlers/lightie-error';
+import { Get } from './get';
 import 'isomorphic-fetch';
 
 global.fetch = jest.fn(() =>
-  Promise.resolve(new Response(JSON.stringify({ message: 'Success' }), { status: 200 }))
+  Promise.resolve(
+    new Response(JSON.stringify({ message: 'Success' }), { status: 200 }),
+  ),
 );
 
 describe('Get method model', () => {
@@ -11,7 +13,9 @@ describe('Get method model', () => {
 
   beforeEach(() => {
     (fetch as jest.Mock).mockClear();
-    method = new Get('http://localhost:3000', 'posts', { headers: { key: 'value' } });
+    method = new Get('http://localhost:3000', 'posts', {
+      headers: { key: 'value' },
+    });
   });
 
   it('should return status and message on successful get request with custom headers', async () => {
@@ -19,7 +23,6 @@ describe('Get method model', () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual({ message: 'Success' });
 
-    // Verificar se fetch foi chamado com os argumentos corretos
     expect(fetch).toHaveBeenCalledWith('http://localhost:3000/posts', {
       method: 'GET',
       headers: {
@@ -30,14 +33,12 @@ describe('Get method model', () => {
   });
 
   it('should return status and message on successful get request without custom headers', async () => {
-    // Criar uma nova instância de Post sem passar options
     const methodWithoutHeaders = new Get('http://localhost:3000', 'posts');
 
     const response = await methodWithoutHeaders.run();
     expect(response.status).toBe(200);
     expect(response.data).toEqual({ message: 'Success' });
 
-    // Verificar se fetch foi chamado com os argumentos corretos
     expect(fetch).toHaveBeenCalledWith('http://localhost:3000/posts', {
       method: 'GET',
       headers: {
@@ -47,7 +48,9 @@ describe('Get method model', () => {
   });
 
   it('should handle error on get request', async () => {
-    (fetch as jest.Mock).mockImplementationOnce(() => Promise.reject(new Error('Network error')));
+    (fetch as jest.Mock).mockImplementationOnce(() =>
+      Promise.reject(new Error('Network error')),
+    );
 
     try {
       await method.run();
@@ -58,13 +61,18 @@ describe('Get method model', () => {
 
   it('should throw an error when the response is not ok', async () => {
     (fetch as jest.Mock).mockResolvedValueOnce(
-      new Response(JSON.stringify({ message: 'Bad Request' }), { status: 400, statusText: 'Bad Request'})
+      new Response(JSON.stringify({ message: 'Bad Request' }), {
+        status: 400,
+        statusText: 'Bad Request',
+      }),
     );
 
     try {
       await method.run();
     } catch (error) {
-      expect(error).toEqual(new LightieError(400, 'Bad Request', {message: 'Bad Request'} ));
+      expect(error).toEqual(
+        new LightieError(400, 'Bad Request', { message: 'Bad Request' }),
+      );
     }
   });
 });
