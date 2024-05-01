@@ -4,7 +4,8 @@ export const req = new LightieRequest();
 
 export { IHeaderRequest } from "./src/utils/interfaces/header.interface";
 export { IInterceptorCallbackConfig } from "./src/utils/interfaces/interceptor-callback-config.interface";
-export { IInterceptorByMethod, IInterceptorByPathName } from "./src/utils/interfaces/interceptors.interface";
+export { IInterceptorByPathName } from "./src/utils/interfaces/interceptors.interface";
+export { TInterceptorByMethod } from './src/utils/types/interceptor-by-method.type';
 export { IResponse } from "./src/utils/interfaces/response.interface";
 export { IOptions } from "./src/utils/interfaces/options.interface";
 

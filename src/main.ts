@@ -1,5 +1,6 @@
 import { Interceptor } from './models/helpers/interceptor';
 import { Get, Post, Patch, Put, Delete } from './models/methods';
+import { Options } from './models/methods/options';
 import { HttpMethodsEnum } from './utils/enums/http-methods.enum';
 import { IHeaderRequest } from './utils/interfaces/header.interface';
 import { IInterceptorCallbackConfig } from './utils/interfaces/interceptor-callback-config.interface';
@@ -15,7 +16,7 @@ export class LightieRequest {
     if (url) {
       this.url = url;
     }
-    
+
     if (this.url.endsWith('/')) {
       this.url = this.url.slice(0, -1);
     }
@@ -126,5 +127,45 @@ export class LightieRequest {
       headers: config.headers,
     });
     return await deleteRequest.run();
+  }
+
+  async options(path?: string, headers?: IHeaderRequest) {
+    const HEADERS = { ...this.headers, ...headers };
+
+    if (path?.startsWith('/')) path = path.slice(1);
+    const config = {
+      url: this.url,
+      path,
+      headers: HEADERS,
+      method: HttpMethodsEnum.OPTIONS,
+    };
+    this.interceptor.runInterceptorsByMethod(config);
+    this.interceptor.runInterceptorsByPathName(config);
+    this.interceptor.runInterceptors(config);
+
+    const optionsRequest = new Options(config.url, config.path, {
+      headers: config.headers,
+    });
+    return await optionsRequest.run();
+  }
+
+  async head(path?: string, headers?: IHeaderRequest) {
+    const HEADERS = { ...this.headers, ...headers };
+
+    if (path?.startsWith('/')) path = path.slice(1);
+    const config = {
+      url: this.url,
+      path,
+      headers: HEADERS,
+      method: HttpMethodsEnum.HEAD,
+    };
+    this.interceptor.runInterceptorsByMethod(config);
+    this.interceptor.runInterceptorsByPathName(config);
+    this.interceptor.runInterceptors(config);
+
+    const optionsRequest = new Options(config.url, config.path, {
+      headers: config.headers,
+    });
+    return await optionsRequest.run();
   }
 }

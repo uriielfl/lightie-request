@@ -7,6 +7,7 @@ export class LightieError {
     public status: number,
     statusText?: string,
     public message: any = 'No message provided',
+    
   ) {
     this.statusText =
       statusText ||

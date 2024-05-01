@@ -1,21 +1,25 @@
 import { HttpMethodsEnum } from '../../utils/enums/http-methods.enum';
 import { IInterceptorCallbackConfig } from '../../utils/interfaces/interceptor-callback-config.interface';
 import {
-  IInterceptorByMethod,
   IInterceptorByPathName,
 } from '../../utils/interfaces/interceptors.interface';
+import {
+  TInterceptorByMethod,
+} from '../../utils/types/interceptor-by-method.type';
 
 export class Interceptor {
   private interceptors:
     | ((config: IInterceptorCallbackConfig) => void)[]
     | ((config: IInterceptorCallbackConfig) => any)[] = [];
-  private interceptorsByMethod: IInterceptorByMethod = {
+  private interceptorsByMethod: TInterceptorByMethod = {
     GET: [],
     POST: [],
     PUT: [],
     PATCH: [],
     DELETE: [],
-  } as IInterceptorByMethod;
+    OPTIONS: [],
+    HEAD: [],
+  } as TInterceptorByMethod;
   private interceptorsByPathName: IInterceptorByPathName[] = [];
 
   constructor() {}
