@@ -192,3 +192,4 @@ Thank you!
 ### Contributors
 Automatically updated through github actions\
 - [Unknown](https://github.com)
+- [Uriel Francisco Libano](https://github.com/uriielfl)
