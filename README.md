@@ -187,8 +187,4 @@ I'm particularly interested in receiving contributions related to documentation,
 
 I want to express my gratitude in advance to all contributors for their time and effort!
 
-Thank you!- [null](null)
-\n## Contributors
-- [Unknown](https://github.com)
-\n## Contributors
-- [Uriel Francisco Libano](https://github.com/uriielfl)
+Thank you! \
