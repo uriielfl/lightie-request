@@ -13,7 +13,7 @@ To install the library, execute the following command:
 npm install lightie-request
 ```
 
-### Usages
+## Usages
 First, import the library:
 
 ```javascript
@@ -24,73 +24,155 @@ You can initialize the library with a base URL:
 ```javascript
 req.init('http://localhost:3000');
 ```
-If you don't pass any URL, it will default to "http://localhost:80".
+If no URL is provided, 'http://localhost:80' will be used as the default.
 
 Lightie Request allows you to make five types of HTTP requests:
+### Methods
 
-### Get
+#### Get
+
 ```javascript
-const headers = {
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVC...'
-}
 
-const options = {
-    headers: headers
-}
-req.get('/path/to/resource', options);
+req.get('/path/to/resource');
 ```
 
-### Post
+#### Post
 ```javascript
-const headers = {
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVC...'
-}
 const data = { key: 'value' }
-const options = {
-    body: data,
-    headers: headers
-}
-req.post('/path/to/resource', options);
+
+req.post('/path/to/resource', data);
 ```
 
-### Patch
+#### Patch
 ```javascript
-const headers = {
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVC...'
-}
-const options = {
-    body: data,
-    headers: headers
-}
 const data = { key: 'value' }
-req.patch('/path/to/resource', options);
+
+req.patch('/path/to/resource', data);
 ```
 
-### Put
+#### Put
 ```javascript
-const headers = {
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVC...'
-}
-const options = {
-    body: data,
-    headers: headers
-}
 const data = { key: 'value' }
-req.put('/path/to/resource', options);
+
+req.put('/path/to/resource', data);
 ```
 
-### Delete
+#### Delete
 ```javascript
-const headers = {
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVC...'
-}
-const options = {
-    headers: headers
-}
-req.delete('/path/to/resource', options);
+req.delete('/path/to/resource');
 ```
 
 By default, it sends 'Content-Type': 'application/json' in the headers.
+
+### Headers
+There are several ways to set headers in requests. You can directly access the headers through the `req`.
+
+```javascript
+import { req } from 'lightie-request';
+
+const api = req.headers = { Authorization: 'Bearer 123' }
+```
+*Please note that this will affect all subsequent requests made using 'req'.*.
+
+You can also set it in the request
+
+```javascript
+import { req } from 'lightie-request';
+
+const api = req.init('https://github.com')
+const headers = { Authorization: 'Bearer 123' }
+api.get('/path', header)
+```
+
+And you can also access it through an *interceptor*
+
+```javascript
+import { req, IInterceptorCallbackConfig } from 'lightie-request';
+
+const api = req.init('https://github.com')
+const jwtKey = '123456'
+const interceptors = (config:IInterceptorCallbackConfig) => {
+    config.header = { Authorization: `Bearer ${jwtKey}`}
+}
+api.addInterceptors(interceptor)
+const headers = { Authorization: 'Bearer 123' }
+api.get('/path', header)
+```
+
+
+### Interceptors
+
+Lightie Request provides you with 2 types of interceptors: *Interceptors*, *InterceptorsByPathName* and *InterceptorsByPathByMethod* 
+
+Interceptors are functions that are executed before each request. They are useful for manipulating headers, for example.
+
+### Adding an Interceptor
+
+To add an interceptor, you can use the `addInterceptor` method. Here's an example:
+
+```javascript
+import { LightieRequest, IInterceptorCallbackConfig } from 'lightie-request';
+
+const req = new LightieRequest();
+req.init('http://myawesomeapi.com')
+
+const interceptorTest = (config: IInterceptorCallbackConfig) => {
+  config.headers = { ...config.headers, Authorization: 'Bearer 123' };
+  config.path = '/todos/2';
+};
+
+req.addInterceptor(interceptorTest); // No rule
+```
+
+In this example, the interceptor adds an authorization header to each request and modifies the request path to '/todos/2'.
+
+### Adding an Interceptors by Path
+You can add interceptors that will only run for requests to a specific path using the addInterceptor method. For example:
+
+```javascript
+req.addInterceptor(interceptorTest, { path: '/todos/2' });
+```
+In this example, the interceptor will run for requests to the path '/todos/2' or if the path matches /todos/2 as a regular expression.
+
+You can also pass params and Lightie Request will match them with Regular Expressions
+```javascript
+req.addInterceptor(interceptorTest, { path: '/todos/{id}' });
+```
+*This way you can intercept requests that have paths, for example, like: /todo/1, /todo/2, /todo/3, etc...*
+
+And you can specify that you want to match the exact path
+```javascript
+req.addInterceptor(interceptorTest, { path: '/todos/2', exactPath: true });
+```
+This way, the interceptor will automatically skip the RegExp test.
+
+### Adding an Interceptors by Method
+You can add interceptors that will only run for a specific method using the addInterceptor method. Here's an example:
+
+```javascript
+req.addInterceptor(interceptorTest, { method: 'GET' }); 
+```
+In this example, the interceptor will only run for 'GET' requests.
+
+## Response
+If the request is successful (i.e., the promise is resolved), the response will be in the following format:
+
+```javascript
+   {
+    status: number, // The HTTP status code
+    data: any, // The response data
+    statusText: string, // The status message associated with the status code
+  };
+```
+If the request fails (i.e., the promise is rejected), a LightieError will be thrown with the following format:
+
+```javascript
+  {
+    status: number, // The HTTP status code
+    statusText: string, // The status message associated with the status code
+    message: any // The error message or data
+  }
+```
 
 ### Contribuitions
 
