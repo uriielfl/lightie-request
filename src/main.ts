@@ -15,6 +15,10 @@ export class LightieRequest {
     if (url) {
       this.url = url;
     }
+    
+    if (this.url.endsWith('/')) {
+      this.url = this.url.slice(0, -1);
+    }
 
     return this;
   }
