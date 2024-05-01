@@ -187,4 +187,8 @@ I'm particularly interested in receiving contributions related to documentation,
 
 I want to express my gratitude in advance to all contributors for their time and effort!
 
+
 Thank you! \
+
+### Contributors
+Automatically updated through github actions\
