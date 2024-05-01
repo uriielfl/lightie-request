@@ -1,0 +1,86 @@
+name: Run Tests
+
+on: 
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Clear npm cache
+      run: npm cache clean --force
+
+    - name: Delete package-lock.json
+      run: rm package-lock.json
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run Tests
+      run: npm run test:coverage
+      
+  update_contributors:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup jq
+        uses: dcarbone/install-jq-action@v2.1.0
+
+      - name: Fetch author info
+        id: author
+        run: |
+          AUTHOR_NAME=$(curl -s -H "Authorization: token ${{ secrets.CONTRIBUTORS_DEPENDABOT }}" https://api.github.com/users/${{ github.event.pull_request.user.login }} | jq -r ".name")
+          AUTHOR_PROFILE=$(curl -s -H "Authorization: token ${{ secrets.CONTRIBUTORS_DEPENDABOT }}" https://api.github.com/users/${{ github.event.pull_request.user.login }} | jq -r ".html_url")
+          if [ "$AUTHOR_NAME" == "null" ]; then AUTHOR_NAME="Unknown"; fi
+          if [ "$AUTHOR_PROFILE" == "null" ]; then AUTHOR_PROFILE="https://github.com"; fi
+          echo "::set-output name=AUTHOR_NAME::$AUTHOR_NAME"
+          echo "::set-output name=AUTHOR_PROFILE::$AUTHOR_PROFILE"
+
+      - name: Checkout hml branch
+        run: |
+          git fetch origin hml
+          git checkout hml
+
+      - name: Create new branch
+        run: |
+          git checkout -b update-readme
+
+      - name: Update README
+        run: |
+          echo "- [${{ steps.author.outputs.AUTHOR_NAME }}](${{ steps.author.outputs.AUTHOR_PROFILE }})\" >> README.md
+
+      - name: Commit README changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git commit -m "Update README with contributor info"
+
+      - name: Checkout hml branch
+        run: |
+          git checkout hml
+
+      - name: Merge changes
+        run: |
+          git merge update-readme --no-ff --no-edit
+
+      - name: Push changes
+        run: |
+          git push origin hml
+        env:
+          GITHUB_TOKEN: ${{ secrets.CONTRIBUTORS_DEPENDABOT }}
